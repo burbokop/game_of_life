@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     e172::GameApplication app(argc, argv);
 
     app.setEventHandler(new SDLEventHandler());
-    SDLGraphicsProvider graphicsProvider(app.arguments(), "game_of_life", 256, 256);
+    SDLGraphicsProvider graphicsProvider(app.arguments(), "game_of_life", 128, 128);
     app.setGraphicsProvider(&graphicsProvider);
 
 

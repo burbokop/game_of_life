@@ -7,8 +7,8 @@
 
 
 class Matrix {
-    size_t m_w;
-    size_t m_h;
+    size_t m_w = 0;
+    size_t m_h = 0;
     std::vector<bool> m_data;
 public:
     Matrix() {}
@@ -26,8 +26,8 @@ public:
 
 
 class GameOfLife : public e172::Entity {
-    e172::ElapsedTimer timer;
     Matrix matrix;
+    e172::ElapsedTimer timer;
 public:
     GameOfLife();
 

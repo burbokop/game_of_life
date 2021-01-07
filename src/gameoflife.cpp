@@ -44,18 +44,18 @@ Matrix::Matrix(size_t w, size_t h, double coef) {
 
 
 GameOfLife::GameOfLife() {
-    timer = e172::ElapsedTimer(8);
+    timer = e172::ElapsedTimer(16);
 }
 
 void GameOfLife::proceed(e172::Context *context, e172::AbstractEventHandler *eventHandler) {
-    if(timer.check()) {
-        e172::CellularAutomaton::proceed(matrix.w(), matrix.h(), matrix.data(), e172::CellularAutomaton::maze);
+    if(timer.check(matrix.w() > 0 && matrix.h() > 0)) {
+        e172::CellularAutomaton::proceed(matrix.w(), matrix.h(), matrix.data(), e172::CellularAutomaton::gameOfLife);
     }
 }
 
 void GameOfLife::render(e172::AbstractRenderer *renderer) {
     if(matrix.w() != renderer->resolution().size_tX() || matrix.h() != renderer->resolution().size_tY()) {
-        matrix = Matrix(renderer->resolution().size_tX(), renderer->resolution().size_tY(), 256 * 16);
+        matrix = Matrix(renderer->resolution().size_tX(), renderer->resolution().size_tY(), 0.15);
     }
 
     for(size_t y = 0; y < matrix.h(); ++y) {
