@@ -12,7 +12,7 @@ class Matrix {
     std::vector<bool> m_data;
 public:
     Matrix() {}
-    Matrix(size_t w, size_t h, bool init_rand = false);
+    Matrix(size_t w, size_t h, size_t init_count = 0);
 
     auto value(size_t x, size_t y);
     auto value(size_t x, size_t y) const;
