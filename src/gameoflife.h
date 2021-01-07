@@ -2,9 +2,9 @@
 #define GAMEOFLIFE_H
 
 #include <e172/src/entity.h>
+#include <src/math/cellularautomaton.h>
 #include <src/time/elapsedtimer.h>
 
-typedef std::pair<std::set<size_t>, std::set<size_t>> GOLRule;
 
 class Matrix {
     size_t m_w;
@@ -12,23 +12,24 @@ class Matrix {
     std::vector<bool> m_data;
 public:
     Matrix() {}
-    Matrix(size_t w, size_t h, size_t init_count = 0);
+    Matrix(size_t w, size_t h, double coef = 0.5);
 
     auto value(size_t x, size_t y);
     auto value(size_t x, size_t y) const;
 
     size_t w() const;
     size_t h() const;
+
+    std::vector<bool> data() const;
+    std::vector<bool> &data();
 };
 
 
 class GameOfLife : public e172::Entity {
     e172::ElapsedTimer timer;
     Matrix matrix;
-    GOLRule rule;
 public:
     GameOfLife();
-    static size_t cellsCount(size_t x, size_t y, const Matrix &matrix);
 
     // Entity interface
 public:
