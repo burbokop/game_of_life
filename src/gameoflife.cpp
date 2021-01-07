@@ -38,6 +38,8 @@ Matrix::Matrix(size_t w, size_t h, bool init_rand) {
 GameOfLife::GameOfLife() {
     timer = e172::ElapsedTimer(0);
     matrix = Matrix(256, 256, true);
+
+    rule = GOLRule { { 3 }, { 2, 3 } };
 }
 
 size_t GameOfLife::cellsCount(size_t x, size_t y, const Matrix &matrix) {
@@ -59,11 +61,11 @@ void GameOfLife::proceed(e172::Context *context, e172::AbstractEventHandler *eve
             for(size_t x = 0; x < matrix.w(); ++x) {
                 const auto c = cellsCount(x, y, matrix);
                 if(matrix.value(x, y) == false) {
-                    if(c == 3) {
+                    if(rule.first.contains(c)) {
                         matrix.value(x, y) = true;
                     }
                 } else {
-                    if(c != 2 && c != 3) {
+                    if(!rule.first.contains(c)) {
                         matrix.value(x, y) = false;
                     }
                 }

@@ -4,6 +4,8 @@
 #include <e172/src/entity.h>
 #include <src/time/elapsedtimer.h>
 
+typedef std::pair<std::set<size_t>, std::set<size_t>> GOLRule;
+
 class Matrix {
     size_t m_w;
     size_t m_h;
@@ -23,6 +25,7 @@ public:
 class GameOfLife : public e172::Entity {
     e172::ElapsedTimer timer;
     Matrix matrix;
+    GOLRule rule;
 public:
     GameOfLife();
     static size_t cellsCount(size_t x, size_t y, const Matrix &matrix);
