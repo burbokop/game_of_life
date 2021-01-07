@@ -10,6 +10,8 @@ include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 add_executable(game_of_life
     src/main.cpp
+    src/gameoflife.cpp
+    src/gameoflife.h
     )
 
 
