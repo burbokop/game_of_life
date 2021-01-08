@@ -25,6 +25,18 @@ void GameOfLife::proceed(e172::Context *context, e172::AbstractEventHandler *eve
         }
     }
 
+    if(eventHandler->keySinglePressed(e172::ScancodeBackSpace)) {
+        for(size_t i = 0; i < matrixData.size(); ++i) {
+            matrixData[i] = false;
+        }
+        if(clearMode) {
+            matrixProxy.center() = true;
+        } else {
+            e172::Math::randInit(matrixData.data(), matrixData.size(), 0.15, e172::boolean(true));
+        }
+        clearMode = !clearMode;
+    }
+
     if(timer.check(matrixProxy.width() > 0 && matrixProxy.height() > 0)) {
         e172::CellularAutomaton::proceed(matrixProxy, e172::CellularAutomaton::booleanRules[m_ruleIndex]);
     }
@@ -48,5 +60,18 @@ void GameOfLife::render(e172::AbstractRenderer *renderer) {
             }
         }
     }
+
+    renderer->drawString(
+                "{ Arrows } - switch rule",
+                { 4, renderer->resolution().y() - 24 },
+                0xffffff,
+                e172::TextFormat(e172::TextFormat::AlignDefault, 10)
+                );
+    renderer->drawString(
+                "{ Backspace } - change clear mode",
+                { 4, renderer->resolution().y() - 12 },
+                0xffffff,
+                e172::TextFormat(e172::TextFormat::AlignDefault, 10)
+                );
 }
 

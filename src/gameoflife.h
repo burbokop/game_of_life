@@ -11,6 +11,7 @@ class GameOfLife : public e172::Entity {
     e172::MatrixProxy<e172::boolean> matrixProxy;
     e172::ElapsedTimer timer;
     size_t m_ruleIndex = 0;
+    bool clearMode = false;
 public:
     GameOfLife();
 
