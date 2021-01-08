@@ -14,6 +14,10 @@ add_executable(game_of_life
     src/gameoflife.h
     src/wireworld.cpp
     src/wireworld.h
+    src/starwars.cpp
+    src/starwars.h
+    src/entityswitch.cpp
+    src/entityswitch.h
     )
 
 

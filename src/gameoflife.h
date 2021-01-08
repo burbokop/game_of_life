@@ -10,6 +10,7 @@ class GameOfLife : public e172::Entity {
     std::vector<e172::boolean> matrixData;
     e172::MatrixProxy<e172::boolean> matrixProxy;
     e172::ElapsedTimer timer;
+    size_t m_ruleIndex = 0;
 public:
     GameOfLife();
 
