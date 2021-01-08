@@ -12,6 +12,8 @@ add_executable(game_of_life
     src/main.cpp
     src/gameoflife.cpp
     src/gameoflife.h
+    src/wireworld.cpp
+    src/wireworld.h
     )
 
 

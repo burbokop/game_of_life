@@ -2,7 +2,6 @@
 #define GAMEOFLIFE_H
 
 #include <e172/src/entity.h>
-#include <src/math/cellularautomaton.h>
 #include <src/time/elapsedtimer.h>
 #include <src/utility/matrixproxy.h>
 #include <e172/src/utility/boolean.h>
