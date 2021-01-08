@@ -4,29 +4,12 @@
 #include <e172/src/entity.h>
 #include <src/math/cellularautomaton.h>
 #include <src/time/elapsedtimer.h>
-
-
-class Matrix {
-    size_t m_w = 0;
-    size_t m_h = 0;
-    std::vector<bool> m_data;
-public:
-    Matrix() {}
-    Matrix(size_t w, size_t h, double coef = 0.5);
-
-    auto value(size_t x, size_t y);
-    auto value(size_t x, size_t y) const;
-
-    size_t w() const;
-    size_t h() const;
-
-    std::vector<bool> data() const;
-    std::vector<bool> &data();
-};
-
+#include <src/utility/matrixproxy.h>
+#include <e172/src/utility/boolean.h>
 
 class GameOfLife : public e172::Entity {
-    Matrix matrix;
+    std::vector<e172::boolean> matrixData;
+    e172::MatrixProxy<e172::boolean> matrixProxy;
     e172::ElapsedTimer timer;
 public:
     GameOfLife();

@@ -2,65 +2,35 @@
 
 #include <src/graphics/abstractrenderer.h>
 
-size_t Matrix::w() const { return m_w; }
-size_t Matrix::h() const { return m_h; }
-
-std::vector<bool> Matrix::data() const {
-    return m_data;
-}
-
-std::vector<bool> &Matrix::data() {
-    return m_data;
-}
-
-auto Matrix::value(size_t x, size_t y) {
-    x %= m_w;
-    y %= m_h;
-    return m_data[y * m_w + x];
-}
-
-auto Matrix::value(size_t x, size_t y) const {
-    x %= m_w;
-    y %= m_h;
-    return m_data[y * m_w + x];
-}
-
-Matrix::Matrix(size_t w, size_t h, double coef) {
-    std::srand(clock());
-    m_w = w;
-    m_h = h;
-    m_data.resize(w * h);
-
-    if(coef && m_data.size() > 0) {
-        for(size_t y = 0; y < h; ++y) {
-            for(size_t x = 0; x < w; ++x) {
-                value(x, y) = (double(std::rand()) / double(std::numeric_limits<decltype (std::rand())>::max())) < coef;
-            }
-        }
-    }
-}
-
-
+#include <src/math/math.h>
 
 
 GameOfLife::GameOfLife() {
-    timer = e172::ElapsedTimer(16);
+    timer = e172::ElapsedTimer(32);
 }
 
 void GameOfLife::proceed(e172::Context *context, e172::AbstractEventHandler *eventHandler) {
-    if(timer.check(matrix.w() > 0 && matrix.h() > 0)) {
-        e172::CellularAutomaton::proceed(matrix.w(), matrix.h(), matrix.data(), e172::CellularAutomaton::gameOfLife);
+    (void)context;
+    (void)eventHandler;
+    if(timer.check(matrixProxy.width() > 0 && matrixProxy.height() > 0)) {
+        e172::CellularAutomaton::proceed(matrixProxy.width(), matrixProxy.height(), matrixProxy.data(), e172::CellularAutomaton::gameOfLife);
     }
 }
 
 void GameOfLife::render(e172::AbstractRenderer *renderer) {
-    if(matrix.w() != renderer->resolution().size_tX() || matrix.h() != renderer->resolution().size_tY()) {
-        matrix = Matrix(renderer->resolution().size_tX(), renderer->resolution().size_tY(), 0.15);
+    {
+        const auto cw = renderer->resolution().size_tX();
+        const auto ch = renderer->resolution().size_tY();
+        if(matrixProxy.width() != cw || matrixProxy.height() != ch) {
+            matrixData.resize(cw * ch);
+            e172::Math::randInit(matrixData.data(), matrixData.size(), 0.15, true);
+            matrixProxy = e172::MatrixProxy(cw, ch, matrixData.data());
+        }
     }
 
-    for(size_t y = 0; y < matrix.h(); ++y) {
-        for(size_t x = 0; x < matrix.w(); ++x) {
-            if(matrix.value(x, y)) {
+    for(size_t y = 0; y < matrixProxy.height(); ++y) {
+        for(size_t x = 0; x < matrixProxy.width(); ++x) {
+            if(matrixProxy.value(x, y)) {
                 renderer->drawPixel({ double(x), double(y) }, 0xff8800);
             }
         }
