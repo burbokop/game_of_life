@@ -9,6 +9,7 @@ class StarWars : public e172::Entity {
     std::vector<uint32_t> matrixData;
     e172::MatrixProxy<uint32_t> matrixProxy;
     e172::ElapsedTimer timer;
+    size_t m_ruleIndex = 0;
 public:
     StarWars();
 

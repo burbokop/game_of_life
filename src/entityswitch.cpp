@@ -2,6 +2,8 @@
 
 #include <src/abstracteventhandler.h>
 
+#include <src/graphics/abstractrenderer.h>
+
 
 EntitySwitch::EntitySwitch(const std::vector<e172::ptr<Entity> > &entities) {
     m_entities = entities;

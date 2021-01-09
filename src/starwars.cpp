@@ -1,5 +1,6 @@
 #include "starwars.h"
 
+#include <src/abstracteventhandler.h>
 #include <src/graphics/abstractrenderer.h>
 #include <src/math/cellularautomaton.h>
 #include <src/math/math.h>
@@ -10,19 +11,40 @@ StarWars::StarWars() {
 
 void StarWars::proceed(e172::Context *context, e172::AbstractEventHandler *eventHandler) {
     (void)context;
-    (void)eventHandler;
+
+    if(eventHandler->keySinglePressed(e172::ScancodeLeft)) {
+        if(m_ruleIndex > 0) {
+            --m_ruleIndex;
+        }
+    } else if(eventHandler->keySinglePressed(e172::ScancodeRight)) {
+        if(m_ruleIndex < e172::CellularAutomaton::cooldownRules.size() - 1) {
+            ++m_ruleIndex;
+        }
+    }
+
+    const auto currentRule = e172::CellularAutomaton::cooldownRules[m_ruleIndex];
+
+    if(eventHandler->keySinglePressed(e172::ScancodeBackSpace)) {
+        for(size_t i = 0; i < matrixData.size(); ++i) {
+            matrixData[i] = false;
+        }
+        e172::Math::randInit(matrixData.data(), matrixData.size(), 0.01, uint32_t(std::get<2>(currentRule) - 1));
+    }
+
+
     if(timer.check(matrixProxy.width() > 0 && matrixProxy.height() > 0)) {
-        e172::CellularAutomaton::proceed(matrixProxy, e172::CellularAutomaton::starWars);
+        e172::CellularAutomaton::proceed(matrixProxy, currentRule);
     }
 }
 
 void StarWars::render(e172::AbstractRenderer *renderer) {
+    const size_t cooldown = std::get<2>(e172::CellularAutomaton::cooldownRules[m_ruleIndex]);
     {
         const auto cw = renderer->resolution().size_tX();
         const auto ch = renderer->resolution().size_tY();
         if(matrixProxy.width() != cw || matrixProxy.height() != ch) {
             matrixData.resize(cw * ch);
-            e172::Math::randInit(matrixData.data(), matrixData.size(), 0.01, uint32_t(3));
+            e172::Math::randInit(matrixData.data(), matrixData.size(), 0.01, uint32_t(cooldown - 1));
             matrixProxy = e172::MatrixProxy(cw, ch, matrixData.data());
         }
     }
@@ -43,4 +65,17 @@ void StarWars::render(e172::AbstractRenderer *renderer) {
             }
         }
     }
+
+    renderer->drawString(
+                "{ Arrows } - switch rule",
+                { 4, renderer->resolution().y() - 24 },
+                0xffffff,
+                e172::TextFormat(e172::TextFormat::AlignDefault, 10)
+                );
+    renderer->drawString(
+                "{ Backspace } - clear",
+                { 4, renderer->resolution().y() - 12 },
+                0xffffff,
+                e172::TextFormat(e172::TextFormat::AlignDefault, 10)
+                );
 }
