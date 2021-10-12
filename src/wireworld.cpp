@@ -64,7 +64,10 @@ void WireWorld::render(e172::AbstractRenderer *renderer) {
     }
 
     renderer->drawPixel(pencil, 0x88ffffff);
-    renderer->drawString("interval: " + std::to_string(timer.interval()), { 4, 4 }, 0xffffff, e172::TextFormat(e172::TextFormat::AlignDefault, 12));
+
+    renderer->drawString("{ 1, 2, 3 } - change rule", { 4, 4 }, 0xffffff, e172::TextFormat(e172::TextFormat::AlignDefault, 10));
+    renderer->drawString("interval: " + std::to_string(timer.interval()), { 4, 16 }, 0xffffff, e172::TextFormat(e172::TextFormat::AlignDefault, 12));
+
     renderer->drawString(
                 "{ W } - wire, { S } - singnal, { E } - clear",
                 { 4, renderer->resolution().y() - 38 },

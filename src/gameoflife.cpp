@@ -61,6 +61,8 @@ void GameOfLife::render(e172::AbstractRenderer *renderer) {
         }
     }
 
+    renderer->drawString("{ 1, 2, 3 } - change rule", { 4, 4 }, 0xffffff, e172::TextFormat(e172::TextFormat::AlignDefault, 10));
+
     renderer->drawString(
                 "{ Arrows } - switch rule",
                 { 4, renderer->resolution().y() - 24 },
